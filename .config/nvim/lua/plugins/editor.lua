@@ -121,6 +121,10 @@ return {
     ---@module 'oil'
     ---@type oil.SetupOpts
     opts = {
+      keymaps = {
+        ["<C-h>"] = false,
+        ["<C-l>"] = false,
+      },
       view_options = {
         show_hidden = true,
       },
