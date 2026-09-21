@@ -455,39 +455,25 @@ function M.status()
   return agent_state == "working" and "Pi ◐" or "Pi ●"
 end
 
-function M.prompt(options)
-  local context = current_context()
-  if options and options.exit_visual then
-    vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
+function M.submit()
+  local socket_path, error = get_socket_path()
+  if not socket_path then
+    vim.notify(error, vim.log.levels.ERROR, { title = "Pi" })
+    return
   end
 
-  vim.ui.input({ prompt = "Pi prompt: " }, function(input)
-    local prompt = input and vim.trim(input) or ""
-    if prompt == "" then
-      return
-    end
-
-    local socket_path, error = get_socket_path()
-    if not socket_path then
-      vim.notify(error, vim.log.levels.ERROR, { title = "Pi" })
-      return
-    end
-
-    ensure_connection(socket_path, context, function(target)
-      request(target, {
-        type = "prompt",
-        prompt = prompt,
-        context = context,
-      }, function(ok, result)
-        vim.schedule(function()
-          if not ok then
-            notify(result or "Pi rejected the prompt", vim.log.levels.ERROR)
-            return
-          end
-          agent_state = "working"
-          redraw_statusline()
-          vim.notify("Prompt sent to Pi", vim.log.levels.INFO, { title = "Pi" })
-        end)
+  ensure_connection(socket_path, current_context(), function(target)
+    request(target, { type = "submit" }, function(ok, result)
+      vim.schedule(function()
+        if not ok then
+          notify(result or "Pi rejected the draft submission", vim.log.levels.ERROR)
+          return
+        end
+        if not result.submitted then
+          vim.notify("Pi draft is empty", vim.log.levels.INFO, { title = "Pi" })
+          return
+        end
+        vim.notify("Pi draft submitted", vim.log.levels.INFO, { title = "Pi" })
       end)
     end)
   end)
@@ -516,6 +502,20 @@ local function add_to_draft(label, content, context)
         vim.notify("Added " .. label:lower() .. " to Pi draft", vim.log.levels.INFO, { title = "Pi" })
       end)
     end)
+  end)
+end
+
+function M.prompt()
+  local context = current_context()
+  if context.selection then
+    vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
+  end
+
+  vim.ui.input({ prompt = "Add to Pi draft: " }, function(input)
+    local prompt = input and vim.trim(input) or ""
+    if prompt ~= "" then
+      add_to_draft("Neovim prompt", prompt, context)
+    end
   end)
 end
 

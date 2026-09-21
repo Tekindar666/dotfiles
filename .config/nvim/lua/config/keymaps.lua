@@ -5,10 +5,6 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for conciseness
 
--- basic keymaps
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
-keymap.set("t", "jk", "<C-\\><C-n>", { desc = "Exit terminal mode with jk" })
-
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
@@ -26,17 +22,17 @@ keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- open oil with -
 keymap.set("n", "-", "<cmd>Oil<CR>")
 
-keymap.set("n", "<leader>pa", function()
+keymap.set({ "n", "x" }, "<leader>pa", function()
   require("util.pi").add_context()
-end, { desc = "Add Context to Pi" })
-
-keymap.set("x", "<leader>pa", function()
-  require("util.pi").prompt({ exit_visual = true })
-end, { desc = "Prompt Pi with Selection" })
+end, { desc = "Add Context to Pi Draft" })
 
 keymap.set({ "n", "x" }, "<leader>pp", function()
   require("util.pi").prompt()
-end, { desc = "Prompt Pi" })
+end, { desc = "Add Prompt to Pi Draft" })
+
+keymap.set({ "n", "x" }, "<leader>p<CR>", function()
+  require("util.pi").submit()
+end, { desc = "Submit Pi Draft" })
 
 keymap.set({ "n", "x" }, "<leader>pd", function()
   require("util.pi").add_diagnostics()
