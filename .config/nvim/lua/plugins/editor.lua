@@ -6,23 +6,20 @@ return {
   {
     "folke/snacks.nvim",
     opts = {
+      lazygit = {
+        config = {
+          gui = {
+            theme = {
+              inactiveBorderColor = { "#d8dee9" },
+            },
+          },
+        },
+      },
       picker = {
-        layout = {
-          hidden = { "preview" },
-          layout = {
-            backdrop = false,
-            row = 3,
-            width = 0.5,
-            min_width = 80,
-            max_width = 100,
-            height = 0.4,
-            min_height = 2,
-            box = "vertical",
-            border = "hpad",
-            title = "{title}",
-            title_pos = "center",
-            { win = "input", height = 1, border = { " ", " ", " ", " ", " ", " ", " ", " " } },
-            { win = "list", border = "hpad" },
+        layout = { preset = "default" },
+        win = {
+          preview = {
+            wo = { wrap = true },
           },
         },
         ignored = true,

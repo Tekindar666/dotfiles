@@ -15,6 +15,12 @@
 [delta]
 	navigate = true
 	side-by-side = false
+	syntax-theme = Nord
+	dark = true
+	minus-style = syntax "#3b3038"
+	plus-style = syntax "#343e36"
+	minus-emph-style = syntax "#573e49"
+	plus-emph-style = syntax "#465540"
 [merge]
 	conflictStyle = zdiff3
 [rerere]
