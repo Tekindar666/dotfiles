@@ -198,6 +198,9 @@ end
 local request_handlers = {
   read_buffer = read_buffer,
   publish_quickfix = publish_quickfix,
+  publish_harpoon = function(params)
+    return require("util.pi-harpoon").publish(params)
+  end,
 }
 
 local function close_connection(target, reason)
@@ -206,6 +209,13 @@ local function close_connection(target, reason)
   end
   target.closed = true
   target.connected = false
+
+  for _, ready in ipairs(target.ready_callbacks) do
+    if ready.on_error then
+      ready.on_error(reason or "Pi disconnected")
+    end
+  end
+  target.ready_callbacks = {}
 
   for id, pending in pairs(target.pending) do
     if pending.timer then
@@ -330,13 +340,13 @@ local function register(target, context)
   })
 end
 
-local function ensure_connection(path, context, callback)
+local function ensure_connection(path, context, callback, on_error)
   if connection and not connection.closed and connection.path == path then
     if connection.connected then
       register(connection, context)
       callback(connection)
     else
-      table.insert(connection.ready_callbacks, { context = context, callback = callback })
+      table.insert(connection.ready_callbacks, { context = context, callback = callback, on_error = on_error })
     end
     return
   end
@@ -348,6 +358,9 @@ local function ensure_connection(path, context, callback)
   local pipe = vim.uv.new_pipe(false)
   if not pipe then
     notify("Failed to create bridge pipe", vim.log.levels.ERROR)
+    if on_error then
+      on_error("Failed to create bridge pipe")
+    end
     return
   end
 
@@ -358,7 +371,7 @@ local function ensure_connection(path, context, callback)
     pending = {},
     closed = false,
     connected = false,
-    ready_callbacks = { { context = context, callback = callback } },
+    ready_callbacks = { { context = context, callback = callback, on_error = on_error } },
   }
   connection = target
 
@@ -371,11 +384,12 @@ local function ensure_connection(path, context, callback)
 
     target.connected = true
     start_reader(target)
-    for _, ready in ipairs(target.ready_callbacks) do
+    local ready_callbacks = target.ready_callbacks
+    target.ready_callbacks = {}
+    for _, ready in ipairs(ready_callbacks) do
       register(target, ready.context)
       ready.callback(target)
     end
-    target.ready_callbacks = {}
     redraw_statusline()
   end)
 end
@@ -479,11 +493,14 @@ function M.submit()
   end)
 end
 
-local function add_to_draft(label, content, context)
+local function add_to_draft(label, content, context, callback)
   context = context or current_context()
   local socket_path, error = get_socket_path()
   if not socket_path then
     vim.notify(error, vim.log.levels.ERROR, { title = "Pi" })
+    if callback then
+      callback(false)
+    end
     return
   end
 
@@ -495,13 +512,24 @@ local function add_to_draft(label, content, context)
       context = context,
     }, function(ok, result)
       vim.schedule(function()
+        if callback then
+          callback(ok)
+        end
         if not ok then
-          notify(result or "Pi rejected the editor context", vim.log.levels.ERROR)
+          local message = result or "Pi rejected the editor context"
+          if callback then
+            message = message .. ". Prompt kept; check Pi's draft before retrying."
+          end
+          notify(message, vim.log.levels.ERROR)
           return
         end
         vim.notify("Added " .. label:lower() .. " to Pi draft", vim.log.levels.INFO, { title = "Pi" })
       end)
     end)
+  end, function()
+    if callback then
+      callback(false)
+    end
   end)
 end
 
@@ -511,11 +539,14 @@ function M.prompt()
     vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
   end
 
-  vim.ui.input({ prompt = "Add to Pi draft: " }, function(input)
-    local prompt = input and vim.trim(input) or ""
-    if prompt ~= "" then
-      add_to_draft("Neovim prompt", prompt, context)
-    end
+  -- Keep connection routing, but attach buffer metadata only for an explicit selection.
+  if not context.selection then
+    context.file = nil
+    context.cursor = nil
+    context.changedtick = nil
+  end
+  require("util.pi-prompt").open(context, function(content, source, done)
+    add_to_draft("Neovim prompt", content, source, done)
   end)
 end
 

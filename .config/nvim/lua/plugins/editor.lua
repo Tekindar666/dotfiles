@@ -1,10 +1,30 @@
 return {
+  -- The Markdown extra provides this plugin; conceallevel alone does not disable it.
+  { "MeanderingProgrammer/render-markdown.nvim", enabled = false },
+
   -- Snacks picker layout
   {
     "folke/snacks.nvim",
     opts = {
       picker = {
-        layout = { preset = "ivy_split" },
+        layout = {
+          hidden = { "preview" },
+          layout = {
+            backdrop = false,
+            row = 3,
+            width = 0.5,
+            min_width = 80,
+            max_width = 100,
+            height = 0.4,
+            min_height = 2,
+            box = "vertical",
+            border = "hpad",
+            title = "{title}",
+            title_pos = "center",
+            { win = "input", height = 1, border = { " ", " ", " ", " ", " ", " ", " ", " " } },
+            { win = "list", border = "hpad" },
+          },
+        },
         ignored = true,
       },
       zen = {

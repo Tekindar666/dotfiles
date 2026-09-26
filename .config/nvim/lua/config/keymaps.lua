@@ -55,6 +55,10 @@ keymap.set("n", "<leader>yp", function()
   vim.notify("Copied " .. path)
 end, { desc = "Yank File Path" })
 
+keymap.set("n", "<leader>fh", function()
+  require("util.hidden-files").open()
+end, { desc = "Find Hidden and Git-Ignored Files" })
+
 -- copy a selected file's import path relative to the current file
 keymap.set("n", "<leader>fi", function()
   local current_file = vim.api.nvim_buf_get_name(0)

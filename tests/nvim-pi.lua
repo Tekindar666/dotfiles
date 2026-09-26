@@ -2,21 +2,22 @@
 vim.opt.runtimepath:append(vim.fn.getcwd() .. "/.config/nvim")
 
 local requests = {}
+local responses = {}
 local notifications = {}
-local input = "Explain the selection"
 local reader
 local submitted = true
+local reply_ok = true
+local hold_reply = false
+local connect_error
+local socket_available = true
 
 vim.notify = function(message)
   table.insert(notifications, message)
 end
-vim.ui.input = function(_, callback)
-  callback(input)
-end
 vim.system = function()
   return {
     wait = function()
-      return { code = 0, stdout = "/test/pi.sock" }
+      return { code = socket_available and 0 or 1, stdout = "/test/pi.sock" }
     end,
   }
 end
@@ -24,7 +25,7 @@ vim.env.TMUX_PANE = "%test"
 vim.uv.new_pipe = function()
   return {
     connect = function(_, _, callback)
-      callback()
+      callback(connect_error)
     end,
     read_start = function(_, callback)
       reader = callback
@@ -34,12 +35,20 @@ vim.uv.new_pipe = function()
       if message.type == "register" then
         return
       end
+      if message.type == "response" then
+        table.insert(responses, message)
+        return
+      end
       table.insert(requests, message)
+      if hold_reply then
+        return
+      end
       reader(nil, vim.json.encode({
         version = 1,
         type = "response",
         id = message.id,
-        ok = true,
+        ok = reply_ok,
+        error = not reply_ok and "Pi rejected the append" or nil,
         result = { submitted = submitted },
       }) .. "\n")
     end,
@@ -83,25 +92,122 @@ equal("draft", requests[#requests].type)
 equal(1, requests[#requests].context.selection.start.line)
 equal(2, requests[#requests].context.selection["end"].line)
 
+local source_buffer = vim.api.nvim_get_current_buf()
+local source_tick = vim.api.nvim_buf_get_changedtick(source_buffer)
+local source_cursor = vim.api.nvim_win_get_cursor(0)
+local before_prompt = #requests
 invoke("x", " pp")
+equal(before_prompt, #requests)
+local prompt_buffer = vim.api.nvim_get_current_buf()
+assert(prompt_buffer ~= source_buffer)
+vim.api.nvim_buf_set_lines(0, 0, -1, false, { "Explain the selection", "and its callers" })
+invoke("n", "<C-s>")
 equal("draft", requests[#requests].type)
-equal("Explain the selection", requests[#requests].content)
+equal("Explain the selection\nand its callers", requests[#requests].content)
+equal("/test/example.lua", requests[#requests].context.file)
+equal(source_tick, requests[#requests].context.changedtick)
 equal(1, requests[#requests].context.selection.start.line)
 equal(2, requests[#requests].context.selection["end"].line)
-equal("n", vim.fn.mode())
+equal(source_buffer, vim.api.nvim_get_current_buf())
+equal(source_cursor, vim.api.nvim_win_get_cursor(0))
+equal(false, vim.api.nvim_buf_is_valid(prompt_buffer))
 
-input = nil
 local before_cancel = #requests
 invoke("n", " pp")
+invoke("n", "q")
 equal(before_cancel, #requests)
-input = "  "
 invoke("n", " pp")
+vim.api.nvim_buf_set_lines(0, 0, -1, false, { "  " })
+invoke("n", "<C-s>")
 equal(before_cancel, #requests)
-
-input = "Explain the file"
-invoke("n", " pp")
+vim.api.nvim_buf_set_lines(0, 0, -1, false, { "Explain the design" })
+invoke("n", "<C-s>")
 equal("draft", requests[#requests].type)
-equal("Explain the file", requests[#requests].content)
+equal("Explain the design", requests[#requests].content)
+equal(nil, requests[#requests].context.file)
+equal(nil, requests[#requests].context.cursor)
+equal(nil, requests[#requests].context.changedtick)
+equal(nil, requests[#requests].context.selection)
+equal("%test", requests[#requests].context.tmuxPane)
+assert(requests[#requests].context.projectRoot)
+
+-- Rejected appends keep editable text for an explicit retry.
+invoke("n", " pp")
+vim.api.nvim_buf_set_lines(0, 0, -1, false, { "Keep this prompt" })
+prompt_buffer = vim.api.nvim_get_current_buf()
+reply_ok = false
+invoke("n", "<C-s>")
+equal(true, vim.bo[prompt_buffer].modifiable)
+equal({ "Keep this prompt" }, vim.api.nvim_buf_get_lines(prompt_buffer, 0, -1, false))
+reply_ok = true
+
+-- Pending sends freeze text and block duplicate confirmation, including after close/reopen.
+hold_reply = true
+local before_send = #requests
+invoke("n", "<C-s>")
+equal(false, vim.bo[prompt_buffer].modifiable)
+invoke("n", "<C-s>")
+invoke("n", "q")
+invoke("n", " pp")
+invoke("n", "<C-s>")
+equal(before_send + 1, #requests)
+local pending_request = requests[#requests]
+reader(nil, vim.json.encode({ version = 1, type = "response", id = pending_request.id, ok = true }) .. "\n")
+vim.wait(20, function()
+  return false
+end)
+equal(false, vim.api.nvim_buf_is_valid(prompt_buffer))
+hold_reply = false
+
+-- Discovery/connection failures must unlock the composer without discarding its contents.
+invoke("n", " pp")
+vim.api.nvim_buf_set_lines(0, 0, -1, false, { "Reconnect and keep me" })
+prompt_buffer = vim.api.nvim_get_current_buf()
+socket_available = false
+invoke("n", "<C-s>")
+equal(true, vim.bo[prompt_buffer].modifiable)
+socket_available = true
+reader(nil, nil)
+connect_error = "connection refused"
+invoke("n", "<C-s>")
+equal(true, vim.bo[prompt_buffer].modifiable)
+equal({ "Reconnect and keep me" }, vim.api.nvim_buf_get_lines(prompt_buffer, 0, -1, false))
+connect_error = nil
+
+-- Disconnecting an in-flight append retains text too; no automatic retry.
+hold_reply = true
+invoke("n", "<C-s>")
+reader(nil, nil)
+vim.wait(20, function()
+  return false
+end)
+equal(true, vim.bo[prompt_buffer].modifiable)
+equal({ "Reconnect and keep me" }, vim.api.nvim_buf_get_lines(prompt_buffer, 0, -1, false))
+hold_reply = false
+invoke("n", "<C-s>")
+equal(false, vim.api.nvim_buf_is_valid(prompt_buffer))
+
+-- A timeout retains the prompt and ignores a late acknowledgement; retry stays explicit.
+invoke("n", " pp")
+vim.api.nvim_buf_set_lines(0, 0, -1, false, { "Slow acknowledgement" })
+prompt_buffer = vim.api.nvim_get_current_buf()
+hold_reply = true
+invoke("n", "<C-s>")
+local timed_out = requests[#requests]
+local after_send = #requests
+assert(vim.wait(5500, function()
+  return vim.bo[prompt_buffer].modifiable
+end))
+equal(after_send, #requests)
+reader(nil, vim.json.encode({ version = 1, type = "response", id = timed_out.id, ok = true }) .. "\n")
+vim.wait(20, function()
+  return false
+end)
+equal({ "Slow acknowledgement" }, vim.api.nvim_buf_get_lines(prompt_buffer, 0, -1, false))
+assert(notifications[#notifications]:find("check Pi's draft before retrying", 1, true))
+hold_reply = false
+invoke("n", "<C-s>")
+equal(false, vim.api.nvim_buf_is_valid(prompt_buffer))
 
 local namespace = vim.api.nvim_create_namespace("pi-test")
 vim.diagnostic.set(namespace, 0, {
@@ -140,4 +246,25 @@ submitted = false
 invoke("x", " p\r")
 equal("submit", requests[#requests].type)
 equal("Pi draft is empty", notifications[#notifications])
-print("Pi draft keymap checks passed")
+local published
+package.loaded["util.pi-harpoon"] = {
+  publish = function(params)
+    published = params
+    return { added = 1, removed = 0, shared = 0 }
+  end,
+}
+reader(nil, vim.json.encode({
+  version = 1,
+  type = "request",
+  id = "harpoon-test",
+  method = "publish_harpoon",
+  params = { cwd = "/test", paths = { "/test/example.lua" } },
+}) .. "\n")
+assert(vim.wait(1000, function()
+  return #responses > 0
+end))
+equal({ cwd = "/test", paths = { "/test/example.lua" } }, published)
+equal(true, responses[1].ok)
+equal("harpoon-test", responses[1].id)
+equal({ added = 1, removed = 0, shared = 0 }, responses[1].result)
+print("Pi draft keymap and Harpoon routing checks passed")
