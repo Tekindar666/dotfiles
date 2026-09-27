@@ -533,18 +533,17 @@ local function add_to_draft(label, content, context, callback)
   end)
 end
 
-function M.prompt()
+local function text_only_context()
   local context = current_context()
-  if context.selection then
-    vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
-  end
+  return {
+    projectRoot = context.projectRoot,
+    nvimServer = context.nvimServer,
+    tmuxPane = context.tmuxPane,
+  }
+end
 
-  -- Keep connection routing, but attach buffer metadata only for an explicit selection.
-  if not context.selection then
-    context.file = nil
-    context.cursor = nil
-    context.changedtick = nil
-  end
+function M.prompt()
+  local context = text_only_context()
   require("util.pi-prompt").open(context, function(content, source, done)
     add_to_draft("Neovim prompt", content, source, done)
   end)
