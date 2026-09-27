@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -eu
+
+if ! command -v fzf >/dev/null 2>&1; then
+    tmux display-message "fzf is required for the session picker"
+    exit 0
+fi
+
+selected=$(
+    tmux list-sessions -F '#{session_id}	#{session_name}	#{session_attached}' |
+        awk -F '\t' '
+            BEGIN { OFS = "\t" }
+            {
+                marker = $3 != "0" ? "●" : " "
+                printf "%s\t%s  %s\n", $1, marker, $2
+            }
+        ' |
+        fzf \
+            --delimiter='\t' \
+            --with-nth=2 \
+            --no-sort \
+            --cycle \
+            --info=hidden \
+            --no-separator \
+            --layout=reverse \
+            --prompt='Switch to › ' \
+            --pointer='›' \
+            --marker='●' \
+            --color='fg:#d8dee9,bg:#2e3440,fg+:#eceff4,bg+:#3b4252' \
+            --color='hl:#88c0d0,hl+:#88c0d0,prompt:#88c0d0,pointer:#88c0d0' \
+            --color='marker:#a3be8c,spinner:#88c0d0,gutter:#2e3440'
+)
+
+[ -n "$selected" ] || exit 0
+
+session_id=$(printf '%s' "$selected" | cut -f1)
+
+tmux switch-client -t "$session_id"
