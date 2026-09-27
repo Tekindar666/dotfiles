@@ -1,0 +1,4 @@
+#!/bin/sh
+
+exec env -u TMUX tmux -S "${TMUX%%,*}" new-session -A -s floating \; \
+    set-option -t floating detach-on-destroy on
