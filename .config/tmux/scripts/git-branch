@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# symbolic-ref also works on an unborn branch; detached HEAD/non-repos stay empty.
+branch=$(git -C "$1" symbolic-ref --quiet --short HEAD 2>/dev/null) || exit 0
+# Escape tmux style markers in branch names before rendering command output.
+printf '%s\n' "${branch//#/##}"

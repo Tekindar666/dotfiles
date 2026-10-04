@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+
+# Presentation only: fzf returns the original, uncolored row to tmux-fzf.
+# Split at ':' rather than whitespace so session names may contain spaces.
+name_format=$(printf '\033[38;2;163;190;140m{1}\033[0m:{2..}')
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-} --ansi --delimiter=: --with-nth='$name_format'"
+exec "$HOME/.config/tmux/plugins/tmux-fzf/scripts/session.sh" switch
