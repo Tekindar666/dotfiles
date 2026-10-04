@@ -1,189 +1,22 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = """$directory\
-$git_branch\
-$git_status\
-$rust\
-$nodejs\
-$line_break$character"""
+format = '$directory$git_metrics$line_break$character'
+add_newline = true
 
-palette = 'nord'
-
-[palettes.nord]
-rosewater = "#EBCB8B"
-flamingo = "#BF616A"
-pink = "#B48EAD"
-orange = "#D08770"
-red = "#BF616A"
-maroon = "#BF616A"
-peach = "#D08770"
-yellow = "#EBCB8B"
-green = "#A3BE8C"
-teal = "#8FBCBB"
-sky = "#88C0D0"
-sapphire = "#81A1C1"
-blue = "#5E81AC"
-lavender = "#B48EAD"
-text = "#d8dee9"
-subtext1 = "#e5e9f0"
-subtext0 = "#eceff4"
-overlay2 = "#4c566a"
-overlay1 = "#434c5e"
-overlay0 = "#3b4252"
-surface2 = "#2e3440"
-surface1 = "#2e3440"
-surface0 = "#2e3440"
-base = "#2e3440"
-mantle = "#3b4252"
-crust = "#434c5e"
-
-# OS Module
-[os]
-disabled = false
-style = "fg:text"
-
-[os.symbols]
-Windows = "󰍲"
-Ubuntu = "󰕈"
-SUSE = ""
-Raspbian = "󰐿"
-Mint = "󰣭"
-Macos = ""
-Manjaro = ""
-Linux = "󰌽"
-Gentoo = "󰣨"
-Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
-Arch = "󰣇"
-Artix = "󰣇"
-CentOS = ""
-Debian = "󰣚"
-Redhat = "󱄛"
-RedHatEnterprise = "󱄛"
-
-# Username Module
-[username]
-show_always = true
-style_user = "fg:blue"
-style_root = "fg:blue"
-format = '[ $user ]($style)'
-
-# Local IP Module
-[localip]
-ssh_only = false
-style = "fg:text"
-format = '[ $localipv4 ]($style)'
-disabled = false
-
-# Directory Module
 [directory]
-style = "fg:pink"
-format = "[ $path ]($style)"
+style = 'fg:#81A1C1'
+format = ' [$path]($style)'
 truncation_length = 0
 truncate_to_repo = false
-truncation_symbol = "…/"
 
-[directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Developer" = "󰲋 "
-
-# Git Branch Module
-[git_branch]
-symbol = ""
-style = "fg:teal"
-format = '[[ $symbol $branch ](fg:green)]($style)'
-
-# Git Status Module
-[git_status]
-style = "fg:teal"
-format = '[[($all_status$ahead_behind )](fg:green)]($style)'
-
-# Node.js Module
-[nodejs]
-symbol = ""
-style = "fg:rosewater"
-format = '[[ $symbol( $version) ](fg:rosewater)]($style)'
-
-# C Module
-[c]
-symbol = " "
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# Rust Module
-[rust]
-symbol = ""
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# Go Module
-[golang]
-symbol = ""
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# PHP Module
-[php]
-symbol = ""
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# Java Module
-[java]
-symbol = " "
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# Kotlin Module
-[kotlin]
-symbol = ""
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# Haskell Module
-[haskell]
-symbol = ""
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# Python Module
-[python]
-symbol = ""
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# Lua Module
-[lua]
-symbol = "󰢱"
-style = "fg:teal"
-format = '[[ $symbol( $version) ](fg:teal)]($style)'
-
-# Docker Context Module
-[docker_context]
-symbol = ""
-style = "fg:mantle"
-format = '[[ $symbol( $context) ](fg:color_bg3)]($style)'
-
-# Time Module
-[time]
+[git_metrics]
 disabled = false
-time_format = "%R"
-style = "fg:peach"
-format = '[[  $time ](fg:purple)]($style)'
+added_style = 'fg:#475266'
+deleted_style = 'fg:#475266'
+format = '( [+$added]($added_style))( [-$deleted]($deleted_style))'
 
-# Line Break Module
-[line_break]
-disabled = false
-
-# Character Module
 [character]
-format = """
-[$symbol](fg:overlay1) """
-success_symbol = '[ ](fg:bold text)'
-error_symbol = '[ ](fg:bold red)'
-vimcmd_symbol = '[ ](fg:bold green)'
+format = ' $symbol '
+success_symbol = '[❯](fg:#BFBDB6)'
+error_symbol = '[❯](fg:#BFBDB6)'
+vimcmd_symbol = '[](fg:#BFBDB6)'
