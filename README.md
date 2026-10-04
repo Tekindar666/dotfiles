@@ -21,6 +21,7 @@ New work belongs on `main`. The historical branches are retained for reference.
 - gh-dash
 - LazyGit
 - Git
+- Workmux
 
 Hyprland desktop configuration is maintained in [hyprland-dotfiles](https://github.com/Tekindar666/hyprland-dotfiles). Karabiner, OpenCode, Zed, Claude, and Pi configuration are also managed outside this public repository.
 
@@ -41,6 +42,7 @@ The installer:
 5. Installs Tmux Plugin Manager when missing.
 
 Arch installation performs a full system upgrade with `pacman -Syu` to avoid an unsupported partial upgrade.
+Install `workmux-bin` from the AUR separately on Arch; the macOS installer installs Workmux through Homebrew.
 
 To link configuration without installing packages:
 
@@ -49,6 +51,27 @@ To link configuration without installing packages:
 ```
 
 Existing regular files or directories are moved to timestamped backups before linking.
+
+## Tmux navigation
+
+The prefix is **Ctrl-A**:
+
+- **prefix+s**: tmux-fzf session switcher (includes open Workmux sessions).
+- **prefix+F**: full tmux-fzf menu for sessions, windows, panes, and other actions.
+- **prefix+b**: toggle the Workmux agent sidebar across all sessions.
+
+The picker uses the Nord/cyan theme, a 70% × 45% popup, and hidden previews.
+Workmux owns worktree creation/opening; the picker navigates existing sessions.
+Reload tmux configuration with **prefix+r** after changes.
+
+## Workmux
+
+Global defaults live in `.config/workmux/config.yaml`, symlinked to
+`~/.config/workmux/config.yaml` through the configuration directory. Pi is the default agent.
+Keep project-specific hooks, file operations, and pane layouts in each repository's
+`.workmux.yaml` (`workmux init` creates it).
+
+Existing Worktrunk installations and worktrees are not removed by the installer.
 
 ## Zsh layout
 

@@ -139,7 +139,7 @@ install_macos_packages() {
         starship
         tmux
         tree
-        worktrunk
+        raine/workmux/workmux
         zoxide
         zsh-autosuggestions
         zsh-syntax-highlighting
@@ -181,7 +181,6 @@ install_arch_packages() {
         ttf-jetbrains-mono-nerd
         unzip
         wl-clipboard
-        worktrunk
         zoxide
         zsh
         zsh-autosuggestions
@@ -199,6 +198,10 @@ install_arch_packages() {
 
     log_info "Updating Arch and installing required packages..."
     "${pacman_command[@]}" -Syu --needed "${packages[@]}"
+
+    if ! command -v workmux &>/dev/null; then
+        log_warning "Install workmux-bin from the AUR separately to enable Workmux."
+    fi
 }
 
 log_info "Detected platform: $PLATFORM"

@@ -1,0 +1,8 @@
+# Personal defaults; project-specific overrides belong in .workmux.yaml.
+agent: pi
+mode: session
+nerdfont: true
+status_icons:
+  working: "#[fg=yellow]󰔟#[fg=default]"
+  waiting: "#[fg=cyan]󰋗#[fg=default]"
+  done: "#[fg=green]󰄬#[fg=default]"
