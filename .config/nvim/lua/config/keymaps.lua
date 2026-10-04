@@ -30,7 +30,7 @@ keymap.set({ "n", "x" }, "<leader>pp", function()
   require("util.pi").prompt()
 end, { desc = "Add Prompt to Pi Draft" })
 
-keymap.set({ "n", "x" }, "<leader>p<CR>", function()
+keymap.set({ "n", "x" }, "<leader>ps", function()
   require("util.pi").submit()
 end, { desc = "Submit Pi Draft" })
 

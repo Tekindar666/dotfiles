@@ -103,9 +103,10 @@ return {
               "mode",
             },
           },
-          lualine_b = {},
+          lualine_b = { "diff" },
           lualine_c = {},
           lualine_x = {
+            "lsp_status",
             {
               pi.status,
             },
@@ -130,34 +131,7 @@ return {
     end,
   },
 
-  {
-    "Bekaboo/dropbar.nvim",
-    lazy = false,
-    keys = {
-      {
-        "<leader>;",
-        function()
-          require("dropbar.api").pick()
-        end,
-        desc = "Pick Winbar Symbol",
-      },
-      {
-        "[;",
-        function()
-          require("dropbar.api").goto_context_start()
-        end,
-        desc = "Go to Start of Current Context",
-      },
-      {
-        "];",
-        function()
-          require("dropbar.api").select_next_context()
-        end,
-        desc = "Select Next Context",
-      },
-    },
-    opts = {},
-  },
+  { "Bekaboo/dropbar.nvim", enabled = false },
 
   { "nvim-mini/mini.icons" },
 

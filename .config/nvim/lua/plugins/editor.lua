@@ -1,3 +1,11 @@
+-- Keep quickfix notes in supplied reading order, including repeated visits to a file.
+local quickfix = {
+  groups = {},
+  sort = {},
+  format = "{severity_icon} {filename} {pos} {text:Normal}",
+  win = { wo = { wrap = true, linebreak = true } },
+}
+
 return {
   -- The Markdown extra provides this plugin; conceallevel alone does not disable it.
   { "MeanderingProgrammer/render-markdown.nvim", enabled = false },
@@ -8,6 +16,12 @@ return {
     opts = {
       lazygit = {
         config = {
+          os = {
+            -- Keep the nvim-remote preset's close/focus flow, without opening a new tab.
+            edit = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}]],
+            editAtLine = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"]],
+            openDirInEditor = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}}]],
+          },
           gui = {
             theme = {
               inactiveBorderColor = { "#d8dee9" },
@@ -183,6 +197,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
     opts = {
       focus = true,
+      modes = { quickfix = quickfix, qflist = quickfix },
     },
     cmd = "Trouble",
     keys = {

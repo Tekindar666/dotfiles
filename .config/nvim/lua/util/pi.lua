@@ -146,8 +146,11 @@ local function publish_quickfix(params, target)
   if params.mode ~= "replace" and params.mode ~= "append" then
     error("publish_quickfix mode must be replace or append")
   end
-  if not vim.islist(params.items) or #params.items == 0 then
-    error("publish_quickfix requires at least one item")
+  if not vim.islist(params.items) then
+    error("publish_quickfix requires an item list")
+  end
+  if params.mode == "append" and #params.items == 0 then
+    error("publish_quickfix append requires at least one item; use replace to clear")
   end
 
   for _, item in ipairs(params.items) do
@@ -533,17 +536,8 @@ local function add_to_draft(label, content, context, callback)
   end)
 end
 
-local function text_only_context()
-  local context = current_context()
-  return {
-    projectRoot = context.projectRoot,
-    nvimServer = context.nvimServer,
-    tmuxPane = context.tmuxPane,
-  }
-end
-
 function M.prompt()
-  local context = text_only_context()
+  local context = current_context()
   require("util.pi-prompt").open(context, function(content, source, done)
     add_to_draft("Neovim prompt", content, source, done)
   end)
