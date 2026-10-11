@@ -1,8 +1,12 @@
 # Personal defaults; project-specific overrides belong in .workmux.yaml.
 agent: pi
 mode: session
-nerdfont: true
+nerdfont: false
 status_icons:
-  working: "#[fg=yellow]󰔟#[fg=default]"
-  waiting: "#[fg=cyan]󰋗#[fg=default]"
-  done: "#[fg=green]󰄬#[fg=default]"
+  working: "🤖"
+  waiting: "💬"
+  done: "✅"
+sidebar:
+  layout: compact
+  templates:
+    compact: "{status_icon} {worktree} {fill} {git_stats}"
