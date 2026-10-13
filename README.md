@@ -52,6 +52,12 @@ To link configuration without installing packages:
 
 Existing regular files or directories are moved to timestamped backups before linking.
 
+## Neovim and Pi
+
+The bridge is installed from [Tekindar666/pi.nvim](https://github.com/Tekindar666/pi.nvim) through lazy.nvim. Install its companion extension with `pi install git:github.com/Tekindar666/pi.nvim`, then run Pi and Neovim in the same tmux window.
+
+Personal `<leader>p` mappings and statusline styling remain here; bridge implementation and behavioral tests live in the plugin repository. After migration, save your work and restart both applications. Run `nvim --headless -u NONE -l tests/nvim-pi.lua` to check the personal mappings and package configuration.
+
 ## Tmux navigation
 
 The prefix is **Ctrl-A**:

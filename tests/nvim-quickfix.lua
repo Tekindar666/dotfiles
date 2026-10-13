@@ -31,7 +31,7 @@ local tick = vim.api.nvim_buf_get_changedtick(source)
 local long_note = "First: read the entry point before the implementation. "
   .. "This deliberately long explanation must wrap so the reader can see the complete message without scrolling sideways."
 local items = {
-  { filename = root .. "/.config/nvim/lua/util/pi.lua", lnum = 142, col = 1, text = long_note, type = "N" },
+  { filename = root .. "/.config/nvim/lua/config/keymaps.lua", lnum = 34, col = 1, text = long_note, type = "N" },
   {
     filename = root .. "/.config/nvim/lua/plugins/editor.lua",
     lnum = 1,
@@ -40,8 +40,8 @@ local items = {
     type = "E",
   },
   {
-    filename = root .. "/.config/nvim/lua/util/pi.lua",
-    lnum = 127,
+    filename = root .. "/.config/nvim/lua/config/keymaps.lua",
+    lnum = 26,
     col = 1,
     text = "Third: return to the earlier helper",
     type = "I",

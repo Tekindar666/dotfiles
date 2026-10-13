@@ -23,23 +23,23 @@ keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 keymap.set("n", "-", "<cmd>Oil<CR>")
 
 keymap.set({ "n", "x" }, "<leader>pa", function()
-  require("util.pi").add_context()
+  require("pi").add_context()
 end, { desc = "Add Context to Pi Draft" })
 
 keymap.set({ "n", "x" }, "<leader>pp", function()
-  require("util.pi").prompt()
+  require("pi").prompt()
 end, { desc = "Add Prompt to Pi Draft" })
 
 keymap.set({ "n", "x" }, "<leader>ps", function()
-  require("util.pi").submit()
+  require("pi").submit()
 end, { desc = "Submit Pi Draft" })
 
 keymap.set({ "n", "x" }, "<leader>pd", function()
-  require("util.pi").add_diagnostics()
+  require("pi").add_diagnostics()
 end, { desc = "Add Diagnostics to Pi" })
 
 keymap.set({ "n", "x" }, "<leader>ph", function()
-  require("util.pi").add_hover()
+  require("pi").add_hover()
 end, { desc = "Add LSP Hover to Pi" })
 
 -- copy the current file's project-relative path

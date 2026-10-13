@@ -1,6 +1,6 @@
 local plugins = vim.env.NVIM_PLUGIN_DIR or (vim.fn.stdpath("data") .. "/lazy")
 vim.opt.runtimepath:append(plugins .. "/lualine.nvim")
-package.loaded["util.pi"] = {
+package.loaded["pi"] = {
   setup = function() end,
   status = function()
     return "Pi test"
