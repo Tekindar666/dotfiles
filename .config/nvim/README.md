@@ -16,12 +16,10 @@ lua/
 │   ├── editor.lua    -- navigation, file browser, formatting, markdown rendering
 │   ├── git.lua       -- gitsigns, diffview
 │   ├── lsp.lua       -- LSP, completion, Mason tools
+│   ├── pi.lua        -- standalone pi.nvim package
 │   └── extra.lua     -- language-specific (Typst)
 └── util/
-    ├── eslint.lua -- flat-config detection for conform
-    ├── pi.lua     -- Pi bridge and Neovim context integration
-    ├── pi-prompt.lua -- cursor-relative multiline prompt composer
-    └── pi-harpoon.lua -- replace/clear Pi-managed working-set marks
+    └── eslint.lua -- flat-config detection for conform
 ```
 
 ## Plugins
@@ -47,7 +45,7 @@ lua/
 - **conform.nvim** — formatter (`<leader>f`); ESLint flat-config aware for JS/TS
 
 ### Agent
-- **Pi** — tmux-local agent bridge with Neovim context (`<leader>pa`)
+- **[pi.nvim](https://github.com/Tekindar666/pi.nvim)** — tmux-local agent bridge with Neovim context (`<leader>pa`). Install the companion extension with `pi install git:github.com/Tekindar666/pi.nvim`; run Pi and Neovim in the same tmux window. Bridge implementation/tests live in that repository; personal mappings and statusline styling stay here.
 
 ### Git
 - **gitsigns.nvim** — sign column + inline current-line blame
@@ -71,11 +69,13 @@ lua/
 - `<leader>pa` explicitly attaches the current buffer location/selection. `<leader>pd` and `<leader>ph` still append diagnostics and LSP hover with source metadata.
 - `<leader>ps` submits the assembled **Pi draft**, not unsent text still in the composer. Pi's own Enter behavior is unchanged.
 
-Restart Neovim to load the composer after saving any work. No Pi extension reload is needed for this change. Test with:
+After migrating to the package, save your work and restart both Neovim and Pi. Test with:
 
 ```bash
-nvim --headless -u NONE -l tests/nvim-pi-prompt.lua
+# In dotfiles:
 nvim --headless -u NONE -l tests/nvim-pi.lua
+# In a pi.nvim checkout:
+npm test
 ```
 
 The composer test also launches an isolated terminal-backed Neovim (no personal config or shada) to check Insert mode, multiline input, close/reopen, and placement near screen edges/on small terminals. Manually check appearance with your normal theme and verify Ctrl-S reaches Neovim through your terminal/tmux.
@@ -93,10 +93,12 @@ Harpoon remains your personal file working set: `<leader>h` opens its Snacks pic
 Restart Neovim and Pi after saving your work to load both updated configurations. Test in isolated processes without touching personal marks:
 
 ```bash
+# In dotfiles:
 nvim --headless -u NONE -l tests/nvim-quickfix.lua
-nvim --headless -u NONE -l tests/nvim-pi-quickfix.lua
 nvim --headless -u NONE -l tests/nvim-pi.lua
-nvim --headless -u NONE -l tests/nvim-pi-harpoon.lua
+# In a pi.nvim checkout:
+npm test
+npm run test:harpoon
 ```
 
 The display and Harpoon tests need the installed plugins; `NVIM_PLUGIN_DIR` can override their parent directory. Persistent test data is isolated and removed afterward.
