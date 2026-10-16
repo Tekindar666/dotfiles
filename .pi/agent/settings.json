@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.84.2",
-  "theme": "nordic",
+  "theme": "system",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-6-astra",
   "defaultThinkingLevel": "medium",
