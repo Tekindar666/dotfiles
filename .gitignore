@@ -52,8 +52,24 @@ temp/
 # Local shell copy
 .zshrc-copy
 
-# Private Pi configuration
+# Legacy private Pi checkout
 /pi/
+
+# Pi credentials and machine-local state
+.pi/agent/auth.json
+.pi/agent/models.json
+.pi/agent/learner-profile.json
+.pi/agent/mcp-cache.json
+.pi/agent/mcp-oauth/
+.pi/agent/mcp-onboarding.json
+.pi/agent/trust.json
+.pi/agent/bin/
+.pi/agent/git/
+.pi/agent/npm/
+.pi/agent/powerline-footer/
+.pi/agent/sessions/
+.pi/agent/workers/
+.pi/agent/delegation-*/
 
 # Homebrew
 Brewfile.lock.json
