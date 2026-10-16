@@ -22,8 +22,9 @@ New work belongs on `main`. The historical branches are retained for reference.
 - LazyGit
 - Git
 - Workmux
+- Pi (personal settings, skills, extensions, and theme)
 
-Hyprland desktop configuration is maintained in [hyprland-dotfiles](https://github.com/Tekindar666/hyprland-dotfiles). Karabiner, OpenCode, Zed, Claude, and Pi configuration are also managed outside this public repository.
+Hyprland desktop configuration is maintained in [hyprland-dotfiles](https://github.com/Tekindar666/hyprland-dotfiles). Karabiner, OpenCode, Zed, and Claude configuration are managed outside this public repository. Pi credentials and runtime state remain machine-local.
 
 ## Install
 
@@ -54,9 +55,11 @@ Existing regular files or directories are moved to timestamped backups before li
 
 ## Neovim and Pi
 
-The bridge is installed from [Tekindar666/pi.nvim](https://github.com/Tekindar666/pi.nvim) through lazy.nvim. Install its companion extension with `pi install git:github.com/Tekindar666/pi.nvim`, then run Pi and Neovim in the same tmux window.
+The Neovim plugin is installed from [Tekindar666/pi.nvim](https://github.com/Tekindar666/pi.nvim) through lazy.nvim. The Pi companion extension currently lives in this repository; do not install a second copy through Pi. Run Pi and Neovim in the same tmux window.
 
-Personal `<leader>p` mappings and statusline styling remain here; bridge implementation and behavioral tests live in the plugin repository. After migration, save your work and restart both applications. Run `nvim --headless -u NONE -l tests/nvim-pi.lua` to check the personal mappings and package configuration.
+Personal `<leader>p` mappings, statusline styling, and the local Pi companion tests live here; Neovim bridge implementation lives in the plugin repository. After migration, save your work and restart both applications. Run `nvim --headless -u NONE -l tests/nvim-pi.lua` to check the personal mappings and package configuration.
+
+To migrate only Pi without reinstalling terminal or system packages, run `./install.sh --pi-only`. See [Pi setup and validation](docs/pi.md). Credentials, sessions, and installed packages are not copied into this repository.
 
 ## Tmux navigation
 

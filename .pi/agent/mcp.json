@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "autoAuth": true
+  },
+  "mcpServers": {
+    "linear": {
+      "url": "https://mcp.linear.app/mcp"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@0.0.81",
+        "--browser",
+        "chrome",
+        "--isolated",
+        "--output-dir",
+        "/tmp/pi-playwright-etan"
+      ]
+    }
+  }
+}

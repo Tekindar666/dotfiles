@@ -25,10 +25,12 @@ fi
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TEST_HOME="$(mktemp -d)"
 trap 'rm -rf "$TEST_HOME"' EXIT
+export XDG_CONFIG_HOME="$TEST_HOME/.config"
 
 for file in \
     "$REPO_DIR/install.sh" \
-    "$REPO_DIR/tests/install-smoke.sh"; do
+    "$REPO_DIR/tests/install-smoke.sh" \
+    "$REPO_DIR/tests/pi-install-smoke.sh"; do
     bash -n "$file"
 done
 
@@ -43,6 +45,7 @@ HOME="$TEST_HOME" "$REPO_DIR/install.sh" --skip-packages
 HOME="$TEST_HOME" "$REPO_DIR/install.sh" --skip-packages
 
 for source in "$REPO_DIR/.config"/*; do
+    [[ "$source" == "$REPO_DIR/.config/git" ]] && continue
     target="$TEST_HOME/.config/$(basename "$source")"
     if [[ ! -L "$target" || "$(readlink "$target")" != "$source" ]]; then
         echo "Invalid config link: $target" >&2
@@ -74,7 +77,6 @@ fi
 
 for path in \
     "$TEST_HOME/.claude" \
-    "$TEST_HOME/.pi" \
     "$TEST_HOME/.config/karabiner" \
     "$TEST_HOME/.config/opencode" \
     "$TEST_HOME/.config/zed" \
@@ -92,5 +94,9 @@ if find "$TEST_HOME" -name '*.backup.*' -print -quit | grep -q .; then
 fi
 
 HOME="$TEST_HOME" zsh -fc 'source "$HOME/.zshrc"; [[ "$EDITOR" == "nvim" ]]'
+
+[[ "$(readlink "$TEST_HOME/.pi/agent/settings.json")" == "$REPO_DIR/.pi/agent/settings.json" ]]
+[[ "$(readlink "${XDG_CONFIG_HOME:-$TEST_HOME/.config}/git/ignore")" == "$REPO_DIR/.config/git/ignore" ]]
+bash "$REPO_DIR/tests/pi-install-smoke.sh"
 
 echo "$EXPECTED_PLATFORM install smoke test passed"

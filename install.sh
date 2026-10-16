@@ -15,19 +15,24 @@ log_error() { printf "%b[ERROR]%b %s\n" "$RED" "$NC" "$1" >&2; }
 
 usage() {
     cat <<'EOF'
-Usage: ./install.sh [--skip-packages]
+Usage: ./install.sh [--skip-packages | --pi-only]
 
 Options:
   --skip-packages  Link configuration without installing system packages.
+  --pi-only        Link only Pi and its global Git ignore; no package installs.
   -h, --help       Show this help message.
 EOF
 }
 
 SKIP_PACKAGES=false
+PI_ONLY=false
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --skip-packages)
             SKIP_PACKAGES=true
+            ;;
+        --pi-only)
+            PI_ONLY=true
             ;;
         -h | --help)
             usage
@@ -41,23 +46,6 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-
-case "$(uname -s)" in
-    Darwin)
-        PLATFORM="macos"
-        ;;
-    Linux)
-        if [[ ! -f /etc/arch-release ]] || ! command -v pacman &>/dev/null; then
-            log_error "Linux support currently requires Arch Linux and pacman."
-            exit 1
-        fi
-        PLATFORM="arch"
-        ;;
-    *)
-        log_error "Unsupported operating system: $(uname -s)"
-        exit 1
-        ;;
-esac
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -204,6 +192,56 @@ install_arch_packages() {
     fi
 }
 
+install_pi_config() {
+    local agent_dir="$HOME/.pi/agent"
+    local previous_agent_dir=""
+    local retired target source item
+
+    # Capture the old checkout before replacing its links. Never remove local files.
+    if [[ -L "$agent_dir/AGENTS.md" ]]; then
+        previous_agent_dir="$(dirname "$(readlink "$agent_dir/AGENTS.md")")"
+    fi
+    for retired in APPEND_SYSTEM.md subagents.json; do
+        target="$agent_dir/$retired"
+        if [[ -L "$target" ]]; then
+            source="$(readlink "$target")"
+            if [[ "$source" == "$SCRIPT_DIR/.pi/agent/$retired" ||
+                  ( -n "$previous_agent_dir" && "$source" == "$previous_agent_dir/$retired" ) ]]; then
+                unlink "$target"
+            fi
+        fi
+    done
+
+    for item in AGENTS.md keybindings.json mcp.json settings.json zentui.json extensions prompts skills themes; do
+        link_path "$SCRIPT_DIR/.pi/agent/$item" "$agent_dir/$item"
+    done
+    link_path "$SCRIPT_DIR/.pi/web-search.json" "$HOME/.pi/web-search.json"
+    link_path "$SCRIPT_DIR/.config/git/ignore" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore"
+}
+
+if [[ "$PI_ONLY" == true ]]; then
+    install_pi_config
+    log_success "Pi configuration installed. Restart Pi to unload old integrations."
+    exit 0
+fi
+
+case "$(uname -s)" in
+    Darwin)
+        PLATFORM="macos"
+        ;;
+    Linux)
+        if [[ ! -f /etc/arch-release ]] || ! command -v pacman &>/dev/null; then
+            log_error "Linux support currently requires Arch Linux and pacman."
+            exit 1
+        fi
+        PLATFORM="arch"
+        ;;
+    *)
+        log_error "Unsupported operating system: $(uname -s)"
+        exit 1
+        ;;
+esac
+
 log_info "Detected platform: $PLATFORM"
 if [[ "$SKIP_PACKAGES" == true ]]; then
     log_warning "Skipping package installation"
@@ -214,8 +252,11 @@ else
 fi
 
 log_info "Linking dotfiles from $SCRIPT_DIR..."
+install_pi_config
 for item in "$SCRIPT_DIR/.config"/*; do
     [[ -e "$item" ]] || continue
+    # Git may contain machine-local files; link only ignore via install_pi_config.
+    [[ "$item" == "$SCRIPT_DIR/.config/git" ]] && continue
     link_path "$item" "$HOME/.config/$(basename "$item")"
 done
 

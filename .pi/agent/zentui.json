@@ -1,0 +1,80 @@
+{
+  "projectRefreshIntervalMs": 0,
+  "components": {
+    "editor": {
+      "enabled": true,
+      "style": "opencode"
+    },
+    "userMessages": {
+      "enabled": true,
+      "style": "framed"
+    },
+    "footer": {
+      "style": "hidden"
+    }
+  },
+  "contextStyle": "text",
+  "contextThresholds": {
+    "warning": 70,
+    "error": 90
+  },
+  "icons": {
+    "mode": "nerd",
+    "rail": "│"
+  },
+  "colors": {
+    "contextNormal": "muted",
+    "contextWarning": "warning",
+    "contextError": "error",
+    "cost": "success",
+    "separator": "dim",
+    "editorAccent": "accent",
+    "editorPrompt": "accent",
+    "editorBorder": "borderMuted",
+    "editorModel": "#B48EAD",
+    "editorProvider": "muted",
+    "editorThinking": "muted",
+    "editorThinkingMinimal": "thinkingMinimal",
+    "editorThinkingLow": "thinkingLow",
+    "editorThinkingMedium": "thinkingMedium",
+    "editorThinkingHigh": "thinkingHigh",
+    "editorThinkingXhigh": "thinkingXhigh"
+  },
+  "colorSources": {
+    "starship": "theme",
+    "editor": "theme",
+    "userMessages": "theme"
+  },
+  "features": {
+    "editor": true,
+    "statusLine": true,
+    "copyFriendly": false
+  },
+  "footerSegments": {
+    "cwd": false,
+    "gitBranch": false,
+    "gitStatus": false,
+    "gitCounts": false,
+    "gitCommit": false,
+    "gitMetrics": false,
+    "runtime": false,
+    "context": true,
+    "tokens": false,
+    "cost": true,
+    "sessionDuration": false,
+    "username": false,
+    "time": false,
+    "os": false,
+    "packageVersion": false
+  },
+  "extensionStatuses": {
+    "defaultPlacement": "off",
+    "placements": {},
+    "colorModes": {}
+  },
+  "fixedEditor": {
+    "enabled": true,
+    "mouseScroll": true,
+    "copyNotice": true
+  }
+}
