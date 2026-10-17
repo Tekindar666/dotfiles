@@ -44,10 +44,8 @@ return {
   -- Lualine statusline (styled to match tmux: transparent, Nord palette, minimal)
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "Tekindar666/pi.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      local pi = require("pi")
-
       local colors = {
         blue = "#88c0d0",
         green = "#a3be8c",
@@ -105,9 +103,6 @@ return {
           lualine_c = {},
           lualine_x = {
             "lsp_status",
-            {
-              pi.status,
-            },
           },
           lualine_y = {
             {

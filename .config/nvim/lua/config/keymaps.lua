@@ -22,25 +22,9 @@ keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- open oil with -
 keymap.set("n", "-", "<cmd>Oil<CR>")
 
-keymap.set({ "n", "x" }, "<leader>pa", function()
-  require("pi").add_context()
-end, { desc = "Add Context to Pi Draft" })
-
-keymap.set({ "n", "x" }, "<leader>pp", function()
-  require("pi").prompt()
-end, { desc = "Add Prompt to Pi Draft" })
-
-keymap.set({ "n", "x" }, "<leader>ps", function()
-  require("pi").submit()
-end, { desc = "Submit Pi Draft" })
-
-keymap.set({ "n", "x" }, "<leader>pd", function()
-  require("pi").add_diagnostics()
-end, { desc = "Add Diagnostics to Pi" })
-
-keymap.set({ "n", "x" }, "<leader>ph", function()
-  require("pi").add_hover()
-end, { desc = "Add LSP Hover to Pi" })
+keymap.set({ "n", "x" }, "<leader>pa", "<cmd>PiDraft<CR>", { desc = "Append Question to Pi Draft" })
+keymap.set({ "n", "x" }, "<leader>pp", ":PiPrompt<CR>", { desc = "Compose Pi Question" })
+keymap.set({ "n", "x" }, "<leader>ps", "<cmd>PiSubmit<CR>", { desc = "Submit Pi Draft" })
 
 -- copy the current file's project-relative path
 keymap.set("n", "<leader>yp", function()

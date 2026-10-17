@@ -1,8 +1,8 @@
 return {
   {
-    "Tekindar666/pi.nvim",
+    -- Temporary local development checkout; no setup() is needed.
+    dir = vim.fn.expand("~/projects/pi.nvim"),
+    name = "pi.nvim",
     lazy = false,
-    main = "pi",
-    opts = {},
   },
 }
