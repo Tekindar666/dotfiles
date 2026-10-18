@@ -74,9 +74,16 @@ For example, `/skill:worktree -a gemini implement feature X` runs:
 workmux add feature-x -b -P <prompt-file> --agent gemini
 ```
 
-**`--merge`**: Only when explicitly requested by the user, include instructions
-to commit, rebase onto the agreed base, and merge the branch. Confirm the target
-and any worktree cleanup separately; do not infer approval from task completion.
+**`--merge`**: When passed, add instruction to use `/merge` skill at the end to
+commit, rebase, and merge the branch.
+
+```
+...
+Then use the /merge skill to commit, rebase, and merge the branch.
+```
+
+Only instruct worktree agent to `/merge` if explicitly requested by user in
+task.
 
 **`--fork`**: When passed, add `--fork` to the `workmux add` command. This copies
 the current conversation into the new worktree so the agent resumes with full

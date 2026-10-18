@@ -102,7 +102,8 @@ workmux merge --notification  # show system notification on success
 ```
 
 Merges the branch, deletes the tmux window, removes the worktree, and
-deletes the local branch. Merging and cleanup require explicit user approval.
+deletes the local branch. Use the `/merge` skill for the full workflow
+(commit, rebase, then merge).
 
 ### Remove worktrees
 
@@ -147,6 +148,7 @@ workmux capture agent-a -n 50           # last 50 lines
 
 # Send instructions to an agent
 workmux send agent-a "fix the tests"    # short message
+workmux send agent-a "/merge"           # send a skill command
 workmux send agent-a -f followup.md     # from file
 workmux send myproject:docs "update the API section"  # cross-project
 
@@ -211,20 +213,23 @@ automatically. The `<agent>` placeholder resolves to the configured agent.
 
 ### Finishing work: direct merge
 
-Only with explicit approval, commit, rebase onto the agreed base branch,
-and use `workmux merge`. Its cleanup removes the worktree, tmux window, and branch.
+Use `/merge` to commit, rebase onto the base branch, and merge in one
+step. This cleans up the worktree, tmux window, and branch.
 
 ### Finishing work: PR-based
 
 1. Commit changes
 2. `git push -u origin HEAD`
-3. Write a PR description and open the PR when requested
+3. Use `/open-pr` to write a PR description and open in browser
 4. After PR is merged remotely, clean up with `workmux rm --gone`
 
 ### Delegating tasks
 
 Use `/worktree` to spin off tasks into parallel worktree agents. The
 agent writes a prompt file and runs `workmux add -b -P <file>`.
+
+For full lifecycle orchestration (spawn, monitor, merge), use
+`/coordinator`.
 
 ### Cross-project worktree creation
 
@@ -254,4 +259,8 @@ other projects by path and let the agent explore on its own.
 
 ## Related Skills
 
+- **`/merge`**: commit, rebase, and merge the current branch
+- **`/rebase`**: rebase with smart conflict resolution
 - **`/worktree`**: delegate tasks to parallel worktree agents
+- **`/coordinator`**: orchestrate multiple agents (spawn, monitor, merge)
+- **`/open-pr`**: write PR description and open in browser
