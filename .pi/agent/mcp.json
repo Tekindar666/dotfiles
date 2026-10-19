@@ -11,9 +11,10 @@
       "args": [
         "-y",
         "@playwright/mcp@0.0.81",
-        "--browser",
-        "chrome",
-        "--isolated",
+        "--executable-path",
+        "/usr/bin/chromium",
+        "--user-data-dir",
+        "~/.local/share/pi/playwright-profile",
         "--output-dir",
         "/tmp/pi-playwright-etan"
       ]

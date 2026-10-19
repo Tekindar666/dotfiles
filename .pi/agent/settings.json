@@ -10,8 +10,7 @@
   "packages": [
     "npm:pi-claude-oauth-adapter",
     "npm:pi-zentui@0.18.1",
-    "npm:pi-web-access@0.13.0",
-    "npm:pi-mcp-adapter@2.11.0"
+    "npm:pi-web-access@0.13.0"
   ],
   "outputPad": 1,
   "hideThinkingBlock": true,
