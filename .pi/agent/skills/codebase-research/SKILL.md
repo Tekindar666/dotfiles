@@ -1,34 +1,36 @@
 ---
 name: codebase-research
-description: Researches a codebase at feature or subsystem level, explaining architecture, request/data flow, ownership boundaries, conventions, and git history. Use for onboarding, planning, prototyping, or answering how a feature works. Do not use for a question about one exact function or variable.
+description: Trace one specific feature's data flow through actual function calls, from its trigger to its result. Use to understand how a feature executes, not for a broad repository survey or a question about one isolated variable.
 ---
 
-# Codebase Research
+# Codebase research
 
-Explain the feature's behavior before its implementation. Follow the global pairing rules for planning checkpoints, small quickfix reading sets, and temporary uncommitted `NOTE:` annotations. Research is otherwise read-only; a walkthrough must not change behavior.
+Help me follow a specific feature through the code, function by function. The goal is to understand where data comes from, how it changes, and where it goes, not to collect files or survey the whole repository.
 
-## Workflow
+## Pick one path
 
-1. Read applicable `AGENTS.md` files and project documentation.
-2. Map the repository with `find`, `tree`, or `rg --files`; identify entry points, package boundaries, tests, and configuration.
-3. Search concepts and identifiers with `rg`. Prefer several narrow searches over dumping broad results.
-4. Read the smallest set of files that establishes the end-to-end control and data flow.
-5. Use `git log -- <path>`, `git log -S<string>`, `git blame`, and `git show` when intent or evolution matters.
-6. Use LSP navigation only after locating concrete symbols whose definitions, references, implementations, or callers clarify the flow.
-7. Verify important claims against code and cite `path:line`.
+Use the feature and scenario already given. If the starting point is unclear, ask one focused question. Choose one concrete execution, such as a user action with a particular input, before branching into other cases.
 
-## Search strategy
+Read applicable AGENTS.md files and relevant project docs. Find the entry point with narrow searches, then follow actual calls and data dependencies. Read only enough surrounding code to verify the path. Use history when needed to answer why, not as a mandatory step.
 
-- Default to `rg`: it is fast, recursive, respects `.gitignore`, and searches both filenames and contents well.
-- Use `git grep` when only tracked files should count or when searching another revision.
-- Use plain `grep` for piped text or environments without `rg`.
-- Use LSP for semantic relationships, not broad discovery. It complements rather than replaces text search.
-- Use git history to explain why; do not infer intent from current code alone when history is available.
+## Trace the data
 
-## Output
+Give a short overview of the path, then walk through one meaningful step per reply. At each step, explain what matters:
 
-Start with a short plain-language account of what the user does and how the system responds. Distinguish verified existing behavior, actual gaps, and unknowns; do not lead with abstractions or a list of files.
+- what calls this function and which input values it passes;
+- where those values came from, including relevant types and shapes;
+- which branch runs and how the data changes;
+- what is returned, stored, sent, or otherwise changed;
+- which function receives the result next.
 
-Give only the detail needed for the current question: where execution starts, what calls what, what changes outside the function, how failures behave, and which existing tests/examples support the explanation. Cite exact locations after explaining their purpose. Use a diagram only when requested or genuinely clarifying.
+Keep following the same concrete example. Distinguish a function's return value from its side effects. At event, queue, network, or persistence boundaries, locate the receiver or reader rather than pretending there is a direct function call. State when the next part is outside the available code or remains unverified.
 
-For a learning walkthrough, move from that overview to one small state or path in the agreed quickfix reading set. Trace a concrete example through the code; inspect the definition, callers, and tests when a function needs deeper treatment. Don't dump the entire subsystem into one response or treat product-level agreement as readiness to implement. The global pairing rules own the summary-back and implementation handoff.
+Use definitions, callers, types, and relevant tests to verify claims. Use LSP navigation when available and useful. Cite exact path:line locations; don't invent behavior from a function's name or treat an unrun test as proof that it passes.
+
+## Walk together
+
+Follow the global Neovim guidance for small ordered quickfix reading sets and live buffers. Start with the current step and its essential dependencies, not a directory dump. Explain unfamiliar syntax or library calls when they block understanding.
+
+Pause for my questions before advancing. Cover alternate branches and failure paths one at a time after the main path, or when they are the question being investigated. Use mermaid if it makes the data flow clearer; don't replace reading the real functions with a diagram.
+
+Research stays read-only. Don't add teaching comments, scaffolding, or fixes unless requested. Finish with a short recap of the traced path and any gaps, not a broad architecture report.
