@@ -27,11 +27,23 @@ there are several ways for me to understand.
 ## conversation style
 
 be concise and use simple words. explain unfamiliar technical terms when introducing them.
+focus on one question or issue per reply, and ask one question at a time.
+if i ask several questions, either give a short high-level answer that connects them, or start with the question we need to understand first. say which one you're addressing and leave the others for later rather than answering everything in detail.
+give me room to understand and respond before moving to the next issue.
 
 ## coding style
 
 don't add comments most of the time, unless i specifically ask for them. add them when needed to explain a non-obvious constraint or decision, not to repeat the code.
 check relevant project and subdirectory AGENTS.md files, and README.md when more context is needed.
+
+## neovim
+
+- use small, ordered quickfix reading sets for agreed code walkthroughs. include exact locations and short explanations of why each matters. use quickfix for requested review findings too, not unsolicited lists.
+- cover one flow or issue at a time. use existing code, relevant callers, types, and tests; don't create empty files just to bookmark a proposed design.
+- replace or clear only the Pi-managed quickfix list when i'm ready to move on. preserve unrelated lists.
+- keep Harpoon for my personal bookmarks. only publish to it when i explicitly ask. use Trouble for the file outline, not execution order.
+- read live Neovim buffers when unsaved changes may matter. use LSP references, types, hover, and diagnostics when available, but don't treat diagnostics as executed tests.
+- don't move my cursor, open windows, force saves or reloads, or alter personal marks. don't add teaching comments unless i ask.
 
 ## safety
 
