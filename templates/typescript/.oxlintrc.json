@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "eslint/no-var": "error",
+    "eslint/prefer-const": "error",
+    "eslint/eqeqeq": ["error", "always", { "null": "ignore" }],
+    "eslint/curly": ["error", "multi-line"],
+    "eslint/no-eval": "error",
+    "eslint/no-new-wrappers": "error",
+    "eslint/no-throw-literal": "error",
+    "typescript/array-type": ["error", { "default": "array-simple" }],
+    "typescript/consistent-type-definitions": ["error", "interface"],
+    "typescript/no-explicit-any": "warn"
+  }
+}
