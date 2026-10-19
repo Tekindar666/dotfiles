@@ -13,11 +13,7 @@ vim.opt.foldenable = true
 
 -- Disable session autoload on startup
 vim.g.persistence_autoload = false
--- Disable autoformat
--- TODO: make this format with eslint rules and prettier rules
 vim.g.autoformat = true
-vim.g.lazyvim_eslint_auto_format = false
-vim.g.lazyvim_ts_lsp = "tsgo"
 -- disable animations
 vim.g.snacks_animate = false
 --vim.opt.statuscolumn = "%s%=%l  "

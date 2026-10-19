@@ -25,9 +25,9 @@ vim.api.nvim_create_autocmd("QuitPre", {
   end,
 })
 
--- Disable LazyVim's default spell-check for markdown
+-- Disable LazyVim's default spell-check for Markdown and Typst
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "markdown",
+  pattern = { "markdown", "typst" },
   callback = function()
     vim.opt_local.spell = false
   end,

@@ -19,7 +19,7 @@ lua/
 │   ├── pi.lua        -- standalone pi.nvim package
 │   └── extra.lua     -- language-specific (Typst)
 └── util/
-    └── eslint.lua -- flat-config detection for conform
+    └── hidden-files.lua -- hidden-file picker support
 ```
 
 ## Plugins
@@ -42,7 +42,9 @@ lua/
 - **render-markdown.nvim** — explicitly disabled; Markdown syntax highlighting and language support remain enabled
 - **snacks.nvim** — floating picker with preview hidden; relative import-path copying (`<leader>fi`); hidden + Git-ignored file search (`<leader>fh`, includes `.git/`, hidden files only outside Git)
   - `<leader>fh` searches the project root using fd/fdfind and Git, including ignored dependency/build directories. Ordinary visible files are excluded. Test with `nvim --headless -u NONE -l tests/nvim-hidden-files.lua`.
-- **conform.nvim** — formatter (`<leader>f`); ESLint flat-config aware for JS/TS
+- **conform.nvim** — formatter (`<leader>f` and automatic formatting); Oxfmt for JS/TS, including JSX/TSX. Uses project-local Oxfmt when available, with Mason as a fallback.
+- **nvim-lint** — Oxlint diagnostics for JS/TS on save. ESLint integration has been removed; existing projects must adopt Oxlint explicitly if they need equivalent lint rules.
+- **TypeScript presets** — copy the configs from [`templates/typescript`](../../templates/typescript/README.md) into new projects. They are not applied globally.
 
 ### Agent
 - **[pi.nvim](https://github.com/Tekindar666/pi.nvim)** — tmux-local agent bridge with Neovim context (`<leader>pa`). Install the companion extension with `pi install git:github.com/Tekindar666/pi.nvim`; run Pi and Neovim in the same tmux window. Bridge implementation/tests live in that repository; personal mappings and statusline styling stay here.
@@ -54,7 +56,7 @@ lua/
 ### LSP / Completion
 - **blink.cmp** — completion with automatic type/documentation details (super-tab preset, no ghost text)
 - **nvim-lspconfig** — LSP config; inlay hints off, virtual text off, underline diagnostics
-- **Mason** extras: `shellcheck`, `shfmt`, `tailwindcss-language-server`, `css-lsp`, `jdtls`, `checkstyle`
+- **Mason** extras include `shellcheck`, `shfmt`, `jdtls`, `checkstyle`, `oxlint`, and `oxfmt`. After saving and restarting Neovim, use `:MasonInstall oxlint oxfmt` if they aren't installed yet. Previously installed ESLint/Prettier binaries are not automatically uninstalled.
 - **tsgo** — native TypeScript/JS language server (LSP support is still in progress upstream)
 
 ### Extra

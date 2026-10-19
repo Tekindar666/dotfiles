@@ -220,15 +220,28 @@ return {
     opts = {
       formatters_by_ft = {
         lua = { "stylua" },
-        javascript = { "prettierd" },
-        javascriptreact = { "prettierd" },
-        typescript = { "prettierd" },
-        typescriptreact = { "prettierd" },
+        javascript = { "oxfmt" },
+        javascriptreact = { "oxfmt" },
+        typescript = { "oxfmt" },
+        typescriptreact = { "oxfmt" },
       },
       default_format_opts = {
         lsp_format = "fallback",
       },
       formatters = {
+        oxfmt = {
+          command = require("conform.util").from_node_modules("oxfmt"),
+          args = { "--stdin-filepath", "$FILENAME" },
+          stdin = true,
+          cwd = require("conform.util").root_file({
+            ".oxfmtrc.json",
+            ".oxfmtrc.jsonc",
+            "oxfmt.config.ts",
+            "oxfmt.config.mts",
+            "package.json",
+            ".git",
+          }),
+        },
         shfmt = {
           append_args = { "-i", "2" },
         },

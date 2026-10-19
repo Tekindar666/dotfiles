@@ -45,8 +45,8 @@ return {
         "shfmt",
         "jdtls",
         "checkstyle",
-        "eslint_d",
-        "prettierd",
+        "oxlint",
+        "oxfmt",
       })
     end,
   },
@@ -56,16 +56,11 @@ return {
     opts = {
       events = { "BufWritePost" },
       linters_by_ft = {
-        javascript = { "eslint_d" },
-        javascriptreact = { "eslint_d" },
+        javascript = { "oxlint" },
+        javascriptreact = { "oxlint" },
         markdown = {},
-        typescript = { "eslint_d" },
-        typescriptreact = { "eslint_d" },
-      },
-      linters = {
-        eslint_d = {
-          condition = require("util.eslint").has_config,
-        },
+        typescript = { "oxlint" },
+        typescriptreact = { "oxlint" },
       },
     },
   },
@@ -97,23 +92,12 @@ return {
         float = { border = "rounded" },
       },
       servers = {
-        eslint = {
-          settings = {
-            useFlatConfig = false,
-            workingDirectories = { mode = "auto" },
-          },
-        },
+        eslint = { enabled = false },
+        vtsls = { enabled = false },
         tsgo = {},
       },
     },
   },
-  -- {
-  --   "esmuellert/nvim-eslint",
-  --   config = function()
-  --     require("nvim-eslint").setup({})
-  --   end,
-  -- },
-
   -- NOTE: nvim-cmp config commented out in favor of LazyVim's default blink.cmp.
   -- Uncomment the block below (and add { "saghen/blink.nvim", enabled = false }) to restore.
   --
