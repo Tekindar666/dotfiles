@@ -13,7 +13,7 @@
     "npm:pi-web-access@0.13.0"
   ],
   "outputPad": 1,
-  "hideThinkingBlock": true,
+  "hideThinkingBlock": false,
   "editorPaddingX": 0,
   "steeringMode": "all",
   "followUpMode": "all",
