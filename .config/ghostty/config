@@ -11,6 +11,8 @@ window-padding-x = 5
 window-padding-y = 5
 
 # Shell integration
+# Run zsh even if the system login shell is still bash on a fresh install.
+command = zsh
 shell-integration = detect
 
 # Nord colorscheme

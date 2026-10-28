@@ -163,6 +163,8 @@ install_arch_packages() {
         lsd
         neovim
         nodejs-lts-jod
+        noto-fonts-cjk
+        noto-fonts-emoji
         pnpm
         ripgrep
         starship
@@ -191,6 +193,14 @@ install_arch_packages() {
 
     if ! command -v workmux &>/dev/null; then
         log_warning "Install workmux-bin from the AUR separately to enable Workmux."
+    fi
+
+    local product_name=""
+    if [[ -r /sys/class/dmi/id/product_name ]]; then
+        product_name="$(</sys/class/dmi/id/product_name)"
+    fi
+    if [[ "$product_name" == MacBookPro* ]]; then
+        log_warning "T2 MacBook Pro Touch Bar support is not covered by pacman packages. Install the t2linux kernel stack plus apple-ib-drv-dkms-git from the AUR, then reboot."
     fi
 }
 
