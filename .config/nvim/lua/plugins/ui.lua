@@ -7,7 +7,7 @@ return {
     config = function()
       require("nordic").setup({
         transparent = {
-          bg = false,
+          bg = true,
           float = false,
         },
       })
