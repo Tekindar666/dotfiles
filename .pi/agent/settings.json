@@ -1,14 +1,13 @@
 {
-  "lastChangelogVersion": "1.3.0",
+  "lastChangelogVersion": "1.4.0",
   "theme": "system",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6-astra",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "kimi-k3.1-pro",
   "defaultThinkingLevel": "medium",
   "npmCommand": [
     "pnpm"
   ],
   "packages": [
-    "npm:pi-claude-oauth-adapter",
     "npm:pi-zentui@0.18.1",
     "npm:pi-web-access@0.13.0"
   ],
@@ -17,7 +16,7 @@
   "editorPaddingX": 0,
   "steeringMode": "all",
   "followUpMode": "all",
-  "quietStartup": true,
+  "quietStartup": "header",
   "tuiMode": "fullscreen",
   "doubleEscapeAction": "tree",
   "compaction": {
@@ -26,5 +25,6 @@
   "markdown": {
     "codeBlockIndent": "",
     "mermaid": "final"
-  }
+  },
+  "deviceId": "d45a5f27-6e58-4374-953c-c3296b852509"
 }
