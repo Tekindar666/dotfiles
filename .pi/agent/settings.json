@@ -1,8 +1,8 @@
 {
   "lastChangelogVersion": "1.4.0",
   "theme": "system",
-  "defaultProvider": "opencode-go",
-  "defaultModel": "kimi-k3.1-pro",
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-6-luna",
   "defaultThinkingLevel": "medium",
   "npmCommand": [
     "pnpm"
