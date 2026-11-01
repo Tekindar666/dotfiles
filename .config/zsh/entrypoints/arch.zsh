@@ -7,3 +7,6 @@ source "$HOME/.config/zsh/shared.zsh"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# opencode
+export PATH=/home/ed/.opencode/bin:$PATH

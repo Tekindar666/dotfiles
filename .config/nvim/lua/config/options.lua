@@ -1,4 +1,5 @@
 vim.opt.showcmd = true
+vim.opt.showtabline = 0
 vim.opt.ignorecase = true
 vim.opt.smarttab = true
 vim.opt.tabstop = 2
