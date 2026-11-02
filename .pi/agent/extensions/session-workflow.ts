@@ -1,22 +1,9 @@
-import { basename } from "node:path";
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 
 const TMUX_SESSION_NAME_OPTION = "@pi-session-name";
 
-function notificationField(value: string): string {
-  return value.replaceAll(";", ":").replace(/[\x00-\x1f\x7f]+/g, " ");
-}
 
-function sendTerminalNotification(title: string, body: string): void {
-  const sequence = `\x1b]777;notify;${notificationField(title)};${notificationField(body)}\x07`;
-  const output = process.env.TMUX
-    ? `\x1bPtmux;${sequence.replaceAll("\x1b", "\x1b\x1b")}\x1b\\`
-    : sequence;
-
-  process.stdout.write(output);
-}
-
-/** Mirrors session names and sends completion notifications; never styles tmux tabs. */
+/** Mirrors session names without styling tmux tabs. */
 export default function sessionWorkflow(pi: ExtensionAPI): void {
   const pane = process.env.TMUX_PANE;
   let warned = false;
@@ -54,11 +41,5 @@ export default function sessionWorkflow(pi: ExtensionAPI): void {
 
   pi.on("session_info_changed", async (event, ctx) => {
     await syncTmuxWindow(event.name, ctx);
-  });
-
-  pi.on("agent_settled", async (_event, ctx) => {
-    // Read the latest name so renames are reflected without tracking local state.
-    const name = pi.getSessionName() || basename(ctx.cwd);
-    sendTerminalNotification("Pi", `Pi has finished working on ${name}`);
   });
 }
