@@ -1,0 +1,29 @@
+{
+  "React page component": {
+    "prefix": "rpage",
+    "body": [
+      "type ${1:PageName}Prop = {",
+      "  ${2:propName}: ${3:string};",
+      "};",
+      "",
+      "export function ${1:PageName}(props: ${1:PageName}Prop) {",
+      "  $0",
+      "}"
+    ],
+    "description": "React page component with typed props"
+  },
+  "Next.js page with URL params": {
+    "prefix": "npage",
+    "body": [
+      "type PageProps = {",
+      "  params: Promise<{ ${1:slug}: string }>;",
+      "};",
+      "",
+      "export default async function Page({ params }: PageProps) {",
+      "  const { ${1:slug} } = await params;",
+      "  $0",
+      "}"
+    ],
+    "description": "Next.js App Router page using an awaited URL param"
+  }
+}
