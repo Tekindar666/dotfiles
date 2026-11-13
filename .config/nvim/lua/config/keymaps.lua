@@ -22,9 +22,11 @@ keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- open oil with -
 keymap.set("n", "-", "<cmd>Oil<CR>")
 
-keymap.set({ "n", "x" }, "<leader>pa", "<cmd>PiDraft<CR>", { desc = "Append Question to Pi Draft" })
-keymap.set({ "n", "x" }, "<leader>pp", ":PiPrompt<CR>", { desc = "Compose Pi Question" })
-keymap.set({ "n", "x" }, "<leader>ps", "<cmd>PiSubmit<CR>", { desc = "Submit Pi Draft" })
+for _, lhs in ipairs({ "<leader>gg", "<leader>gG" }) do
+  if vim.fn.maparg(lhs, "n") ~= "" then
+    keymap.del("n", lhs)
+  end
+end
 
 -- copy the current file's project-relative path
 keymap.set("n", "<leader>yp", function()
@@ -38,10 +40,6 @@ keymap.set("n", "<leader>yp", function()
   vim.fn.setreg("+", path)
   vim.notify("Copied " .. path)
 end, { desc = "Yank File Path" })
-
-keymap.set("n", "<leader>fh", function()
-  require("util.hidden-files").open()
-end, { desc = "Find Hidden and Git-Ignored Files" })
 
 -- copy a selected file's import path relative to the current file
 keymap.set("n", "<leader>fi", function()

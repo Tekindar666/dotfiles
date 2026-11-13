@@ -1,17 +1,14 @@
 return {
   {
-    -- Temporary local development checkout; no setup() is needed.
-    dir = vim.fn.expand("~/projects/pi.nvim"),
-    name = "pi.nvim",
-    lazy = false,
-  },
-
-  {
-    -- sidecick
     "folke/sidekick.nvim",
     opts = {
-      -- add any options here
+      nes = { enabled = false },
       cli = {
+        win = {
+          keys = {
+            hide_ctrl_dot = false,
+          },
+        },
         mux = {
           backend = "tmux",
           enabled = true,
@@ -19,25 +16,6 @@ return {
       },
     },
     keys = {
-      {
-        "<tab>",
-        function()
-          -- if there is a next edit, jump to it, otherwise apply it if any
-          if not require("sidekick").nes_jump_or_apply() then
-            return "<Tab>" -- fallback to normal tab
-          end
-        end,
-        expr = true,
-        desc = "Goto/Apply Next Edit Suggestion",
-      },
-      {
-        "<c-.>",
-        function()
-          require("sidekick.cli").focus()
-        end,
-        desc = "Sidekick Focus",
-        mode = { "n", "t", "i", "x" },
-      },
       {
         "<leader>aa",
         function()
@@ -91,6 +69,17 @@ return {
         end,
         mode = { "n", "x" },
         desc = "Sidekick Select Prompt",
+      },
+      {
+        "<leader>ai",
+        function()
+          vim.ui.input({ prompt = "Ask AI: " }, function(input)
+            if input and input:match("%S") then
+              require("sidekick.cli").send({ msg = input })
+            end
+          end)
+        end,
+        desc = "Sidekick Custom Prompt",
       },
       -- Example of a keybinding to open Claude directly
       {

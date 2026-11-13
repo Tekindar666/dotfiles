@@ -22,23 +22,7 @@ return {
             { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
             { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
-            { icon = "󰭹 ", key = "p", desc = "Connect Pi", action = ":PiConnect" },
             { icon = " ", key = "l", desc = "LeetCode", action = ":Leet" },
-          },
-        },
-      },
-      lazygit = {
-        config = {
-          os = {
-            -- Keep the nvim-remote preset's close/focus flow, without opening a new tab.
-            edit = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}]],
-            editAtLine = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"]],
-            openDirInEditor = [[nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}}]],
-          },
-          gui = {
-            theme = {
-              inactiveBorderColor = { "#d8dee9" },
-            },
           },
         },
       },
