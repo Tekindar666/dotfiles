@@ -36,6 +36,7 @@ give me room to understand and respond before moving to the next issue.
 don't add comments most of the time, unless i specifically ask for them. add them when needed to explain a non-obvious constraint or decision, not to repeat the code.
 check relevant project and subdirectory AGENTS.md files, and README.md when more context is needed.
 
+
 ## neovim
 
 - use small, ordered quickfix reading sets for agreed code walkthroughs. include exact locations and short explanations of why each matters. use quickfix for requested review findings too, not unsolicited lists.
