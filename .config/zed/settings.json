@@ -1,0 +1,149 @@
+// Zed settings
+{
+  // the bar to show the open buffers.
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry",
+    },
+  },
+  "tab_bar": {
+    "show": true,
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": false,
+  },
+  // the bar on the very top with close, minimize and fullscreen buttons
+  "title_bar": {
+    "show_menus": false,
+    "show_project_items": true,
+    "show_sign_in": false,
+    "show_user_picture": true,
+    "show_onboarding_banner": false,
+    "show_branch_icon": true,
+    "show_branch_name": true,
+  },
+  "project_panel": {
+    "hide_root": true,
+    "starts_open": false,
+    "folder_icons": true,
+    "auto_fold_dirs": false,
+    "indent_size": 10,
+    "sticky_scroll": false,
+    "scrollbar": {
+      "show": "never",
+    },
+    "entry_spacing": "standard",
+  },
+  "terminal": {
+    "button": true,
+    "dock": "right",
+  },
+  "git": {
+    "inline_blame": {
+      "enabled": true,
+      "delay_ms": 200,
+      "padding": 50,
+    },
+  },
+  "toolbar": {
+    "breadcrumbs": false,
+    "quick_actions": false,
+  },
+  "tabs": {
+    "show_diagnostics": "all",
+    "git_status": true,
+    "file_icons": true,
+    "activate_on_close": null,
+  },
+  "agent": {
+    "expand_edit_card": false,
+    "expand_terminal_card": false,
+    "message_editor_min_lines": 4,
+    "dock": "left",
+    "default_width": 800,
+  },
+  "telemetry": {
+    "metrics": false,
+  },
+  "vim_mode": true,
+  "base_keymap": "VSCode",
+  "relative_line_numbers": "enabled",
+  "icon_theme": "Symbols Icon Theme",
+  "ui_font_size": 15,
+  "buffer_font_size": 14,
+  "theme": {
+    "mode": "dark",
+    "light": "Gruvbox Light",
+    "dark": "Nordic Blur",
+  },
+
+  "indent_guides": {
+    "enabled": false,
+  },
+  "show_edit_predictions": false,
+  "selection_highlight": false,
+  "cursor_blink": false,
+  "inline_code_actions": false,
+  "file_finder": {
+    "file_icons": true,
+    "skip_focus_for_active_in_search": true,
+    "modal_max_width": "medium",
+  },
+  "colorize_brackets": true,
+  "close_on_file_delete": true,
+  "confirm_quit": true,
+  "hide_mouse": "on_typing",
+  "extend_comment_on_newline": false,
+  "centered_layout": {
+    "left_padding": 0.1,
+    "right_padding": 0.1,
+  },
+  "scrollbar": {
+    "axes": {
+      "horizontal": false,
+      "vertical": false,
+    },
+  },
+  "active_pane_modifiers": {
+    "border_size": 1,
+    "inactive_opacity": 0.8,
+  },
+
+  // lsps
+  "lsp": {
+    "eslint": {
+      "settings": {
+        "run": "onSave",
+        "workingDirectory": { "mode": "auto" },
+        "experimental": { "useFlatConfig": false },
+      },
+    },
+  },
+  "languages": {
+    "TypeScript": {
+      "show_edit_predictions": false,
+      "language_servers": [
+        "!vtsls",
+        "!typescript-language-server",
+        "tsgo",
+        "eslint",
+      ],
+    },
+    "TSX": {
+      "language_servers": [
+        "!vtsls",
+        "!typescript-language-server",
+        "tsgo",
+        "eslint",
+      ],
+    },
+    "JavaScript": {
+      "language_servers": [
+        "!vtsls",
+        "!typescript-language-server",
+        "tsgo",
+        "eslint",
+      ],
+    },
+  },
+  "format_on_save": "on",
+}

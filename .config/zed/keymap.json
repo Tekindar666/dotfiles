@@ -1,0 +1,74 @@
+[
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "space f f": "file_finder::Toggle",
+      "space f s": "pane::DeploySearch",
+      "space f g": "project_search::ToggleFocus",
+      "shift-l": "pane::ActivateNextItem",
+      "shift-h": "pane::ActivatePreviousItem",
+      "space s -": "pane::SplitDown",
+      "space s |": "pane::SplitRight",
+      "space z": "workspace::ToggleCenteredLayout",
+      "space p": "pane::TogglePinTab",
+      "space c": "workspace::CloseInactiveTabsAndPanes",
+      "space a d": "agent::OpenAgentDiff",
+      "space g d": "git::Diff",
+      "space m": "vim::ToggleMarksView",
+      "space t s": "tab_switcher::ToggleAll",
+    },
+  },
+  {
+    "context": "Dock",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+    },
+  },
+  {
+    "context": "(ProjectPanel && not_editing)",
+    "bindings": {
+      "a": "project_panel::NewFile",
+      "d": "project_panel::Delete",
+      "r": "project_panel::Rename",
+      "shift-a": "project_panel::NewDirectory",
+    },
+  },
+
+  {
+    "bindings": {
+      "ctrl-z": "workspace::ToggleZoom",
+      "alt-a": "agent::ToggleFocus",
+      "alt-g": "git_panel::ToggleFocus",
+      "alt-e": "project_panel::ToggleFocus",
+      "alt-d": "debug_panel::ToggleFocus",
+      "alt-/": "project_search::SearchInNew",
+      "ctrl-a c": "workspace::NewCenterTerminal",
+
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "ctrl-k": "workspace::ActivatePaneUp",
+      "ctrl-j": "workspace::ActivatePaneDown",
+
+      "alt-h": "workspace::ToggleLeftDock",
+      "alt-l": "workspace::ToggleRightDock",
+      "alt-j": "workspace::ToggleBottomDock",
+
+      "ctrl-a n": "pane::ActivateNextItem",
+      "ctrl-a p": "pane::ActivatePreviousItem",
+
+      "ctrl-a h": "vim::ResizePaneLeft",
+      "ctrl-a j": "vim::ResizePaneDown",
+      "ctrl-a k": "vim::ResizePaneUp",
+      "ctrl-a l": "vim::ResizePaneRight",
+    },
+  },
+  {
+    "context": "(ProjectPanel && not_editing)",
+    "bindings": {
+      "shift-enter": "project_panel::OpenPermanent",
+    },
+  },
+]
