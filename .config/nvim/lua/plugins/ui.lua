@@ -83,6 +83,28 @@ return {
         },
       }
 
+      local function relative_path()
+        local path
+        local directory
+        if vim.bo.filetype == "oil" then
+          path = require("oil").get_current_dir()
+          directory = path
+        elseif vim.bo.buftype == "" then
+          local filename = vim.api.nvim_buf_get_name(0)
+          if filename ~= "" then
+            path = filename
+            directory = vim.fs.dirname(filename)
+          end
+        end
+        if not path then
+          return ""
+        end
+
+        local root = vim.fs.root(directory, ".git") or vim.fn.getcwd()
+        local relative = vim.fs.relpath(root, path)
+        return relative == "" and "." or relative or path
+      end
+
       vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
       vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "NONE" })
 
@@ -100,7 +122,7 @@ return {
             },
           },
           lualine_b = { "diff" },
-          lualine_c = {},
+          lualine_c = { relative_path },
           lualine_x = {
             "lsp_status",
           },
