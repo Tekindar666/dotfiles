@@ -1,7 +1,11 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = '$directory$git_metrics$line_break$character'
+format = '$hostname$directory$git_metrics$line_break$character'
 add_newline = true
+
+[hostname]
+ssh_only = true
+format = ' [ssh:$hostname](fg:#81A1C1)'
 
 [directory]
 style = 'fg:#81A1C1'

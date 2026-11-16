@@ -3,6 +3,11 @@
     "autoAuth": true
   },
   "mcpServers": {
+    "meju": {
+      "url": "https://www.meju.app/mcp",
+      "oauth": { "clientRegistration": "cimd" },
+      "description": "Meju recipe application MCP server"
+    },
     "linear": {
       "url": "https://mcp.linear.app/mcp"
     },
