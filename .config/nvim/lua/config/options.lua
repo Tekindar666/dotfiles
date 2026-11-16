@@ -1,3 +1,8 @@
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+  vim.g.clipboard = "osc52"
+  vim.opt.clipboard = "unnamedplus"
+end
+
 vim.opt.showcmd = true
 vim.opt.showtabline = 0
 vim.opt.ignorecase = true
