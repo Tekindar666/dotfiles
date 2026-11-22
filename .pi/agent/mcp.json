@@ -5,7 +5,9 @@
   "mcpServers": {
     "meju": {
       "url": "https://www.meju.app/mcp",
-      "oauth": { "clientRegistration": "cimd" },
+      "oauth": {
+        "clientRegistration": "cimd"
+      },
       "description": "Meju recipe application MCP server"
     },
     "linear": {
@@ -23,6 +25,11 @@
         "--output-dir",
         "/tmp/pi-playwright-etan"
       ]
+    },
+    "opgg": {
+      "url": "https://mcp-api.op.gg/mcp",
+      "exposure": "codemode",
+      "description": "OP.GG League of Legends champion stats, builds, counter matchups, lane meta and player data"
     }
   }
 }
