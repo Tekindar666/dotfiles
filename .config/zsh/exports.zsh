@@ -8,6 +8,10 @@ export PATH="$HOME/.local/bin:$PATH"
 [[ -d "$HOME/downloads/git-fuzzy/bin" ]] && export PATH="$HOME/downloads/git-fuzzy/bin:$PATH"
 [[ -d "$HOME/.lmstudio/bin" ]] && export PATH="$PATH:$HOME/.lmstudio/bin"
 
+if [[ -r "$HOME/.config/lsd/ls-colors" ]]; then
+    export LS_COLORS="$(< "$HOME/.config/lsd/ls-colors")"
+fi
+
 # API keys / private environment
 [[ -f "$HOME/.env" ]] && source "$HOME/.env"
 

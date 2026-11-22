@@ -20,6 +20,7 @@ New work belongs on `main`. The historical branches are retained for reference.
 - Fastfetch
 - gh-dash
 - LazyGit
+- lsd (Nordic colors and file icons matched to Oil/Yazi)
 - Git
 - Workmux
 - Pi (personal settings, skills, extensions, and theme)
@@ -97,6 +98,17 @@ Existing Worktrunk installations and worktrees are not removed by the installer.
 ```
 
 The installer links the correct entrypoint to `~/.zshrc`; shell startup does not need to detect the operating system.
+
+## lsd
+
+Configuration lives in `.config/lsd`, symlinked to `~/.config/lsd` by the installer.
+`colors.yaml` styles metadata; Zsh loads `ls-colors` for file-type colors.
+`icons.yaml` uses the Nordic icon mappings from the local Yazi theme, with folder
+mappings taking priority where lsd cannot distinguish a file name from a directory name.
+These are static copies, not an automatic sync with Oil or Yazi.
+
+lsd colors each icon together with its filename, rather than coloring icons separately.
+Run `lsd` directly; no `ls` alias is installed.
 
 ## Notes
 

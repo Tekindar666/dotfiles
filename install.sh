@@ -119,6 +119,7 @@ install_macos_packages() {
         git-lfs
         jq
         lazygit
+        lsd
         neovim
         node@22
         openjdk@17
@@ -159,6 +160,7 @@ install_arch_packages() {
         github-cli
         jq
         lazygit
+        lsd
         neovim
         nodejs-lts-jod
         pnpm
