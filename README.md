@@ -54,11 +54,9 @@ To link configuration without installing packages:
 
 Existing regular files or directories are moved to timestamped backups before linking.
 
-## Neovim and Pi
+## Pi
 
-The Neovim plugin is installed from [Tekindar666/pi.nvim](https://github.com/Tekindar666/pi.nvim) through lazy.nvim. The Pi companion extension currently lives in this repository; do not install a second copy through Pi. Run Pi and Neovim in the same tmux window.
-
-Personal `<leader>p` mappings, statusline styling, and the local Pi companion tests live here; Neovim bridge implementation lives in the plugin repository. After migration, save your work and restart both applications. Run `nvim --headless -u NONE -l tests/nvim-pi.lua` to check the personal mappings and package configuration.
+The Neovim bridge is no longer loaded by this configuration. Restart Pi to unload it from existing sessions.
 
 To migrate only Pi without reinstalling terminal or system packages, run `./install.sh --pi-only`. See [Pi setup and validation](docs/pi.md). Credentials, sessions, and installed packages are not copied into this repository.
 

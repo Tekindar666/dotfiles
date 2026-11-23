@@ -5,7 +5,7 @@ add_newline = true
 
 [hostname]
 ssh_only = true
-format = ' [ssh:$hostname](fg:#81A1C1)'
+format = ' [ssh:$hostname](fg:#FFFFFF)'
 
 [directory]
 style = 'fg:#81A1C1'

@@ -27,9 +27,7 @@ Restart Pi after migration so previously loaded integrations are unloaded. Do no
 
 ## Neovim bridge
 
-Neovim loads `Tekindar666/pi.nvim`, but Pi currently uses the local companion extension at `.pi/agent/extensions/nvim-bridge/index.ts`. Do not also install the package's Pi extension: that would register the bridge twice. Consolidating the companion extension into the standalone package is separate work.
-
-Run Pi and Neovim in the same tmux window. Save your work before restarting either application. Verify a buffer prompt can be submitted, an unsaved buffer can be read, and a requested quickfix list can be published without moving the cursor.
+The Neovim companion extension has been removed. Restart Pi to unload the bridge from existing sessions.
 
 ## Validation
 
